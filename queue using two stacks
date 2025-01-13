@@ -1,0 +1,64 @@
+class Node:
+    def __init__(self,data):
+        self.data=data
+        self.next=None
+
+class Stack:
+    def __init__(self):
+        self.top=None
+
+    def isEmpty(self):
+        return self.top is None
+    
+    def push(self,value):
+        new_node=Node(value)
+        new_node.next=self.top
+        self.top=new_node
+
+    def pop(self):
+        if self.isEmpty():
+            return None
+        else:
+            removed_val=self.top.data
+            self.top=self.top.next
+            return removed_val 
+        
+        
+class Queue:
+    def __init__(self):
+        self.s1=Stack()
+        self.s2=Stack()
+
+    def enqueue(self,value):
+        self.s1.push(value)
+
+    def dequeue(self):
+        if self.isEmpty():
+            return 'Empty QUEUE'
+        if self.s2.isEmpty():
+            while not self.s1.isEmpty():
+                self.s2.push(self.s1.pop())
+        return self.s2.pop()
+    
+    def isEmpty(self):
+        return self.s1.isEmpty() and self.s2.isEmpty()
+    
+    def peek(self):
+        if self.isEmpty():
+            return None
+        if self.s2.isEmpty():
+            while not self.s1.isEmpty():
+                self.s2.push(self.s1.pop())
+        return self.s2.top.data
+        
+n=int(input())
+q=Queue()
+for i in range(n):
+    choice=input()
+    c=choice.split(" ")
+    if c[0]=='1':
+        q.enqueue(int(c[1]))
+    elif c[0]=='2':
+        q.dequeue()
+    elif c[0]=='3':
+        print(q.peek())
